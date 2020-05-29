@@ -1,1 +1,31 @@
-# IBM-Applied-Data-Science-Capstone
+
+## A Recommender System for Grocery Contractor
+### Introduction
+
+The skills of a data scientist are not limited to any particular field rather, they can be used to solve real world problems using data analysis insights. This report tries to solve a similar problem faced by various grocery contractors as to where to place their warehouses. The location of the warehouse plays a very important role in the profits of the contractor. A groceries contractor therefore, needs to be very decisive with where he places one of his warehouses. However, there are many factors which he needs to take into consideration to maximize his clients and therefore his profits.
+
+On top of that, potential clients of the contractor can also take advantage of the location. Groceries are perishable items and are best if delivered fresh. Therefore the contractor must think in a way that makes his warehouse deliver the best product at the best price and at the best time. The delivery time will also play an important role in the freshness of the product since, Toronto is a highly populated city and traffic times can lead to disastrous consequences. For eg: If his warehouse is far away from his clients, not only will this have an effect on the delivery time but also the freshness of his product. Eventually, he can end up losing the client also. Therefore, as a smart person, he must think of the location very strategically. The contractor must therefore find out the successful restaurants, cafes and supermarkets which will require groceries and then lock out the area which will be nearest to the maximum of these and place his warehouse there. It is job to continuously deliver the best quality of products to maintian his clients. In here, we assume, he has already decided to go with a specific Borough. Moreover, one factor is not considered in this analysis. The analysis doesnot consider any specific groceries that the contractor deals with since, it would require additional data from the API about the requirements of the restaurants which was not available. Therefoe, it can be safe to considered that all restaurants require all types of groceries.
+
+### Data Requirements
+We will need geo-locational information about that specific borough and the neighborhoods in that borough. We specifically and technically mean the latitude and longitude numbers of that borough. We assume that it is "Scarborough" in Toronto. This is easily provided for us by the contractor, because the contractor has already made up his mind about the borough. The Postal Codes that fall into that borough (Scarborough) would also be sufficient fo us. I fact we will first find neighborhoods inside Scarborough by their corresponding Postal Codes.
+
+We will need data about different venues in different neighborhoods of that specific borough. In order to gain that information we will use "Foursquare" locational information. By locational information for each venue we mean basic and advanced information about that venue. For example there is a venue in one of the neighborhoods. As basic information, we can obtain its precise latitude and longitude and also its distance from the center of the neighborhood. But we are looking for advanced information such as the category of that venue and whether this venue is a popular one in its category or maybe the average price of the services of this venue. A typical request from Foursquare will provide us with the following information:
+
+[Postal Code] [Neighborhood(s)] [Neighborhood Latitude] [Neighborhood Longitude] [Venue] [Venue Summary] [Venue Category] [Distance (meter)]
+
+The methodology that was used for solving the above stated problem was pretty straight forward. First and foremost, data about different regions inside Scarborough were extracted from a Wikipedia page titled "List of postal codes of Canada: M". The page has a list of all the areas inside the borough along with their Postal codes which are used to identify them. After retreiving the Postal Codes, the Foursquare Developer account was used to connect to the Foursquare API. Venues data was then extracted from the API and then filtered using the Postal Codes.
+
+Therefore, venue data inside each and every neighourhood was then gathered. However, this was raw data and EDA was performed on the raw data to get powerful insights. The next part of the analysis was create the DataFrame of all the venues inside the Scarborough Borough. The venue category was then encoded using the One-Hot Encoding Form. This was done so that the Machine Learning Algorithm can take these as input for training and testing. Different venues have an additional Feature column. This is how the Total Restaurants lists was created. The limitation of the data from the API allows us to assume that all restaurants and food places require all types of groceries and the contractor sells all of them After the initial data preparation, the data can now be applied to one or more Machine Learning Algorithm. Since we need to find out how many restaurants or food joints are present in a specific area, we can use clustering algorithms which can be visualized ideally on the map and also easy to interpret.
+
+1) Mean-Shift Clustering : The goal of Mean-Shift Clustering is to locate the center points of each group/class, which works by updating candidates for center points to be the mean of the points within the sliding-window. However, in this specific problem, we need to find the frequency of the restaurants rather than the centroid.
+
+2) DBSCAN Clustering: DBSCAN stands for Density Based Spatial CLutering and it does help in finding out the density of restaurants in an area. However, DBSCAN begins with an arbitrary starting point which has not been visited. But after visiting all the points, we need to check the distance of the starting point as well which it does not do.
+
+3) Aglomerative Hierarchical Clustering: Since it doesnot consider the number of clusters to form, we cannot use it for each and every area.
+
+4) K-NN Clustering: K-NN clustering is one of the best clustering methods in terms of decreasing complexity and leveraging the model for accurate analysis of the above prepped data.
+
+### Results
+Based on this analysis, the best recommended neighborhood will be:
+
+{'Neighborhood': 'Agincourt', 'Postal Code': 'M1S', 'Neighborhood Latitude': 43.7942003, 'Neighborhood Longitude': -79.26202940000002}
